@@ -1,0 +1,26 @@
+{
+  "name": "ember-cli-packager",
+  "version": "0.0.1",
+  "description": "Packager for Ember CLI Applications",
+  "main": "lib/packager.js",
+  "scripts": {
+    "test": "mocha -R tap tests/**/*-test.js"
+  },
+  "keywords": [
+    "ember-addon"
+  ],
+  "author": "Chad Hietala, Stefan Penner, & Ember CLI Contributors",
+  "license": "MIT",
+  "dependencies": {
+    "broccoli-funnel": "^0.2.3",
+    "broccoli-merge-trees": "^0.2.1",
+    "broccoli-sourcemap-concat": "^0.4.4"
+  },
+  "devDependencies": {
+    "broccoli": "^0.16.2",
+    "broccoli-filter": "^0.1.14",
+    "chai": "^2.3.0",
+    "mocha": "^2.2.4",
+    "walk-sync": "^0.1.3"
+  }
+}

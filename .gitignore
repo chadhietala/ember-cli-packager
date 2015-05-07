@@ -1,0 +1,3 @@
+node_modules
+tmp
+!tests/**/node_modules
