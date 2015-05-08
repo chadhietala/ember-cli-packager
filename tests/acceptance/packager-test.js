@@ -22,7 +22,7 @@ describe('Packager', function() {
   });
 
   it('should have the pre-packager traverse the graph', function() {
-    
+
     packager = new Packager({
       entries: ['dummy']
     });
