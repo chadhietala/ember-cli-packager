@@ -10,6 +10,12 @@ describe('Packager', function() {
   var builder,
       packager;
 
+  function listFiles(directory) {
+    return walkSync(directory).filter(function(relativePath) {
+      return relativePath.slice(-1) !== '/';
+    }).sort();
+  }
+
   beforeEach(function() {
     if (builder) {
       builder = null;
@@ -30,9 +36,7 @@ describe('Packager', function() {
     builder = new broccoli.Builder(packager.prePackagedTree);
 
     return builder.build().then(function(results) {
-      expect(walkSync(results.directory).filter(function(relativePath) {
-        return relativePath.slice(-1) !== '/';
-      }).sort()).to.deep.equal([
+      expect(listFiles(results.directory)).to.deep.equal([
         '__packager__/app-boot.js',
         '__packager__/app-prefix.js',
         '__packager__/app-suffix.js',
@@ -65,5 +69,27 @@ describe('Packager', function() {
         'ember/ember/get.js'
       ]);
     });    
+  });
+
+  it('should follow the default concat strategy', function() {
+    packager = new Packager({
+      entries: ['dummy']
+    });
+
+    var dist = packager.package();
+
+    builder = new broccoli.Builder(dist);
+
+    return builder.build().then(function(results) {
+      expect(listFiles(results.directory)).to.deep.eql([
+        'default-build/assets/dummy.css',
+        'default-build/assets/dummy.js',
+        'default-build/assets/dummy.map',
+        'default-build/assets/vendor.css',
+        'default-build/assets/vendor.js',
+        'default-build/assets/vendor.map',
+        'default-build/index.html'
+      ]);
+    });
   });
 });
