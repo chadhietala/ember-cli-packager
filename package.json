@@ -4,7 +4,8 @@
   "description": "Packager for Ember CLI Applications",
   "main": "lib/packager.js",
   "scripts": {
-    "test": "mocha -R tap tests/**/*-test.js"
+    "test": "mocha -R nyan tests/**/*-test.js",
+    "test:debug": "mocha debug -R spec tests/**/*-test.js"
   },
   "keywords": [
     "ember-addon"
