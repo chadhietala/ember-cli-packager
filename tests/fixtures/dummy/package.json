@@ -21,6 +21,7 @@
   "dependencies": {
     "ember": "2.0.0",
     "ember-cli-hypebars": "9.0.0",
-    "ember-cli-sextan": "1.0.0"
+    "ember-cli-sextan": "1.0.0",
+    "ember-qunit": "9000.0.0"
   }
 }
