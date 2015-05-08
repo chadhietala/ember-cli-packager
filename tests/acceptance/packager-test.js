@@ -33,6 +33,13 @@ describe('Packager', function() {
       expect(walkSync(results.directory).filter(function(relativePath) {
         return relativePath.slice(-1) !== '/';
       }).sort()).to.deep.equal([
+        '__packager__/app-boot.js',
+        '__packager__/app-prefix.js',
+        '__packager__/app-suffix.js',
+        '__packager__/test-support-prefix.js',
+        '__packager__/test-support-suffix.js',
+        '__packager__/vendor-prefix.js',
+        '__packager__/vendor-suffix.js',
         'browserified/ember-qunit/ember-qunit-legacy.js',
         'dummy-tests/dep-graph.json',
         'dummy-tests/index.html',
@@ -40,6 +47,7 @@ describe('Packager', function() {
         'dummy/app.js',
         'dummy/components/baz-bar.js',
         'dummy/components/foo-bar.js',
+        'dummy/config/environment.js',
         'dummy/dep-graph.json',
         'dummy/index.html',
         'dummy/pods/bizz-buzz/component.js',
