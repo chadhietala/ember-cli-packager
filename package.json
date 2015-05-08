@@ -13,8 +13,8 @@
   "author": "Chad Hietala, Stefan Penner, & Ember CLI Contributors",
   "license": "MIT",
   "dependencies": {
-    "ember-cli-pre-packager": "git://github.com/chadhietala/ember-pre-packger.git#master",
-    "ember-cli-builder": "git://github.com/chadhietala/ember-cli-builder.git#master",
+    "ember-cli-pre-packager": "git://github.com/chadhietala/ember-cli-pre-packager.git",
+    "ember-cli-builder": "git://github.com/chadhietala/ember-cli-builder.git",
     "ember-cli": "git://github.com/chadhietala/ember-cli.git#reexporter",
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
