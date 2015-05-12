@@ -48,6 +48,8 @@ describe('Packager', function() {
         'browserified/ember-qunit/ember-qunit-legacy.js',
         'dummy-tests/dep-graph.json',
         'dummy-tests/index.html',
+        'dummy-tests/test-support/baz.js',
+        'dummy-tests/testem.js',
         'dummy-tests/unit/components/foo-bar-test.js',
         'dummy/app.js',
         'dummy/components/baz-bar.js',
@@ -95,6 +97,7 @@ describe('Packager', function() {
           'default-build/assets/vendor.css',
           'default-build/assets/vendor.js',
           'default-build/assets/vendor.map',
+          'default-build/dummy-tests/testem.js',
           'default-build/index.html'
         ]);
       });
@@ -114,6 +117,8 @@ describe('Packager', function() {
         var tests = fs.readFileSync(results.directory + '/default-build/assets/dummy.js', 'utf8');
         expect(tests.indexOf('runningTests = true;')).to.be.gt(-1);
         expect(tests.indexOf('moduleForComponent(\'foo-bar\'')).to.be.gt(-1);
+        expect(tests.indexOf('FROM_TEST_SUPPORT')).to.be.gt(-1);
+        expect(tests.indexOf('if (runningTests)')).to.be.gt(-1);
       });
     });
 
@@ -134,6 +139,8 @@ describe('Packager', function() {
         var tests = fs.readFileSync(results.directory + '/default-build/assets/dummy.js', 'utf8');
         expect(tests.indexOf('runningTests = true;')).to.be.lt(0);
         expect(tests.indexOf('moduleForComponent(\'foo-bar\'')).to.be.lt(0);
+        expect(tests.indexOf('FROM_TEST_SUPPORT')).to.be.lt(0);
+        expect(tests.indexOf('if (runningTests)')).to.be.gt(-1);
         process.env.EMBER_ENV = 'development';
       });
     });
