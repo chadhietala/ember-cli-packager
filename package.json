@@ -4,8 +4,9 @@
   "description": "Packager for Ember CLI Applications",
   "main": "lib/packager.js",
   "scripts": {
-    "test": "mocha -R spec tests/**/*-test.js",
-    "test:debug": "mocha debug -R spec tests/**/*-test.js"
+    "test": "node tests/runner",
+    "test:debug": "node debug tests/runner",
+    "test:cover": "istanbul cover tests/runner.js"
   },
   "keywords": [
     "ember-addon"
@@ -25,6 +26,9 @@
     "broccoli": "^0.16.2",
     "broccoli-filter": "^0.1.14",
     "chai": "^2.3.0",
+    "coveralls": "^2.11.2",
+    "glob": "^5.0.6",
+    "istanbul": "^0.3.14",
     "mocha": "^2.2.4",
     "walk-sync": "^0.1.3"
   }
