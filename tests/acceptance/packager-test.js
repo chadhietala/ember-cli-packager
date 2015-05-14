@@ -137,12 +137,12 @@ describe('Packager', function() {
       builder = new broccoli.Builder(dist);
 
       return builder.build().then(function(results) {
+        process.env.EMBER_ENV = 'development';
         var tests = fs.readFileSync(results.directory + '/default-build/assets/dummy.js', 'utf8');
         expect(tests.indexOf('runningTests = true;')).to.be.lt(0);
         expect(tests.indexOf('moduleForComponent(\'foo-bar\'')).to.be.lt(0);
         expect(tests.indexOf('FROM_TEST_SUPPORT')).to.be.lt(0);
         expect(tests.indexOf('if (runningTests)')).to.be.gt(-1);
-        process.env.EMBER_ENV = 'development';
       });
     });
 
@@ -150,7 +150,7 @@ describe('Packager', function() {
 
   describe('http2 concat strategy', function() {
 
-    it('should output the correct concat files', function() {
+    it('should output granular files', function() {
         packager = new Packager({
           entries: ['dummy'],
           strategies: ['http2']
@@ -189,6 +189,44 @@ describe('Packager', function() {
             'http2-build/ember/ember/get.js'
           ]);
         });
+    });
+
+    it('should output only app files in production', function() {
+      process.env.EMBER_ENV = 'production';
+      packager = new Packager({
+        entries: ['dummy'],
+        strategies: ['http2']
       });
+
+      var dist = packager.package();
+
+      builder = new broccoli.Builder(dist);
+
+      return builder.build().then(function(results) {
+        process.env.EMBER_ENV = 'development';
+        expect(listFiles(results.directory)).to.deep.eql([
+          'http2-build/dummy/app.js',
+          'http2-build/dummy/components/baz-bar.js',
+          'http2-build/dummy/components/foo-bar.js',
+          'http2-build/dummy/config/environment.js',
+          'http2-build/dummy/crossdomain.xml',
+          'http2-build/dummy/index.html',
+          'http2-build/dummy/index.js',
+          'http2-build/dummy/index.map',
+          'http2-build/dummy/pods/bizz-buzz/component.js',
+          'http2-build/dummy/pods/bizz-buzz/template.js',
+          'http2-build/dummy/pods/foo-baz/component.js',
+          'http2-build/dummy/pods/foo-baz/template.js',
+          'http2-build/dummy/robots.txt',
+          'http2-build/dummy/router.js',
+          'http2-build/dummy/styles/app.css',
+          'http2-build/dummy/templates/components/foo-bar.js',
+          'http2-build/dummy/templates/profile.js',
+          'http2-build/ember/ember.js',
+          'http2-build/ember/ember/get.js'
+        ]);
+        
+      });
+    });
   });
 });
