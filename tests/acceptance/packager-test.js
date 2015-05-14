@@ -68,6 +68,7 @@ describe('Packager', function() {
         'dummy/styles/app.css',
         'dummy/templates/components/foo-bar.js',
         'dummy/templates/profile.js',
+        'dummy/test-index.js',
         'ember-qunit/dep-graph.json',
         'ember-qunit/ember-qunit.js',
         'ember/dep-graph.json',
@@ -145,5 +146,49 @@ describe('Packager', function() {
       });
     });
 
+  });
+
+  describe('http2 concat strategy', function() {
+
+    it('should output the correct concat files', function() {
+        packager = new Packager({
+          entries: ['dummy'],
+          strategies: ['http2']
+        });
+
+        var dist = packager.package();
+
+        builder = new broccoli.Builder(dist);
+
+        return builder.build().then(function(results) {
+          expect(listFiles(results.directory)).to.deep.eql([
+            'http2-build/dummy-tests/index.html',
+            'http2-build/dummy-tests/index.js',
+            'http2-build/dummy-tests/index.map',
+            'http2-build/dummy-tests/test-support/baz.js',
+            'http2-build/dummy-tests/testem.js',
+            'http2-build/dummy-tests/unit/components/foo-bar-test.js',
+            'http2-build/dummy/app.js',
+            'http2-build/dummy/components/baz-bar.js',
+            'http2-build/dummy/components/foo-bar.js',
+            'http2-build/dummy/config/environment.js',
+            'http2-build/dummy/crossdomain.xml',
+            'http2-build/dummy/index.html',
+            'http2-build/dummy/index.js',
+            'http2-build/dummy/index.map',
+            'http2-build/dummy/pods/bizz-buzz/component.js',
+            'http2-build/dummy/pods/bizz-buzz/template.js',
+            'http2-build/dummy/pods/foo-baz/component.js',
+            'http2-build/dummy/pods/foo-baz/template.js',
+            'http2-build/dummy/robots.txt',
+            'http2-build/dummy/router.js',
+            'http2-build/dummy/styles/app.css',
+            'http2-build/dummy/templates/components/foo-bar.js',
+            'http2-build/dummy/templates/profile.js',
+            'http2-build/ember/ember.js',
+            'http2-build/ember/ember/get.js'
+          ]);
+        });
+      });
   });
 });
