@@ -17,7 +17,7 @@
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
     "broccoli-sourcemap-concat": "^0.4.4",
-    "broccoli-stew": "^0.2.1",
+    "broccoli-stew": "^0.3.1",
     "ember-cli": "git://github.com/chadhietala/ember-cli.git#reexporter",
     "ember-cli-builder": "git://github.com/chadhietala/ember-cli-builder.git",
     "ember-cli-pre-packager": "git://github.com/chadhietala/ember-cli-pre-packager.git"
