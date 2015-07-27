@@ -69,7 +69,9 @@ describe('Packager', function() {
     });
 
     packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
-    builder = new broccoli.Builder(packager.package());
+    packager.package();
+
+    builder = new broccoli.Builder(packager.builtTree);
 
     return builder.build().then(function(results) {
       expect(listFiles(results.directory).indexOf('some/bower-thing.js') > -1).to.be.ok;
@@ -83,8 +85,9 @@ describe('Packager', function() {
 
     packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
     packager.import('bower_components/other/thing.js');
+    packager.package();
 
-    builder = new broccoli.Builder(packager.package());
+    builder = new broccoli.Builder(packager.builtTree);
 
     return builder.build().then(function(results) {
       expect(listFiles(results.directory).indexOf('other/thing.js') > -1).to.be.ok;
@@ -98,8 +101,9 @@ describe('Packager', function() {
 
     packager.import('vendor/vendored/a.js');
     packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
+    packager.package();
 
-    builder = new broccoli.Builder(packager.package());
+    builder = new broccoli.Builder(packager.builtTree);
 
     return builder.build().then(function(results) {
       expect(listFiles(results.directory).indexOf('vendored/a.js') > -1).to.be.ok;
