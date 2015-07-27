@@ -20,7 +20,7 @@
     "ember-cli-linker": "git://github.com/chadhietala/ember-cli-pre-packager.git"
   },
   "devDependencies": {
-    "broccoli": "^0.16.2",
+    "broccoli": "^0.16.4",
     "broccoli-filter": "^0.1.14",
     "chai": "^2.3.0",
     "coveralls": "^2.11.2",

@@ -28,57 +28,85 @@ describe('Packager', function() {
     process.chdir(cwd);
   });
 
-  it('should have the pre-packager traverse the graph', function() {
+  it('should have the linker link the files that are reachable in the graph', function() {
 
     packager = new Packager({
-      entries: ['dummy']
+      entries: ['dummy', 'dummy/tests']
     });
 
-    builder = new broccoli.Builder(packager.prePackagedTree);
+    packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
+    packager.package();
+
+    builder = new broccoli.Builder(packager.linkedTree);
 
     return builder.build().then(function(results) {
       expect(listFiles(results.directory)).to.deep.equal([
-        '__packager__/app-boot.js',
-        '__packager__/app-prefix.js',
-        '__packager__/app-suffix.js',
-        '__packager__/test-support-prefix.js',
-        '__packager__/test-support-suffix.js',
-        '__packager__/vendor-prefix.js',
-        '__packager__/vendor-suffix.js',
-        'browserified/ember-qunit/ember-qunit-legacy.js',
-        'dummy-tests/dep-graph.json',
-        'dummy-tests/index.html',
-        'dummy-tests/test-support/baz.js',
-        'dummy-tests/testem.js',
-        'dummy-tests/unit/components/foo-bar-test.js',
+        'browserified-bundle.js',
         'dummy/app.js',
         'dummy/components/baz-bar.js',
         'dummy/components/foo-bar.js',
         'dummy/config/environment.js',
-        'dummy/crossdomain.xml',
-        'dummy/dep-graph.json',
-        'dummy/index.html',
         'dummy/index.js',
-        'dummy/pods/bizz-buzz/component.js',
-        'dummy/pods/bizz-buzz/template.js',
         'dummy/pods/foo-baz/component.js',
         'dummy/pods/foo-baz/template.js',
-        'dummy/robots.txt',
         'dummy/router.js',
-        'dummy/styles/app.css',
         'dummy/templates/components/foo-bar.js',
         'dummy/templates/profile.js',
         'dummy/test-index.js',
-        'ember-qunit/dep-graph.json',
-        'ember-qunit/ember-qunit.js',
-        'ember/dep-graph.json',
-        'ember/ember.js',
-        'ember/ember/get.js'
+        'dummy/tests/index.html',
+        'dummy/tests/test-support/baz.js',
+        'dummy/tests/unit/components/foo-bar-test.js',
+        'ember-qunit.js',
+        'ember.js',
+        'ember/get.js'
       ]);
-    });    
+    });
   });
-  
-  describe('default concat strategy', function() {
+
+  it('should handle app imports correctly', function() {
+    packager = new Packager({
+      entries: ['dummy', 'dummy/tests']
+    });
+
+    packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
+    builder = new broccoli.Builder(packager.package());
+
+    return builder.build().then(function(results) {
+      expect(listFiles(results.directory).indexOf('some/bower-thing.js') > -1).to.be.ok;
+    });
+  });
+
+  it('should still output file if no exports were passed', function() {
+    packager = new Packager({
+      entries: ['dummy', 'dummy/tests']
+    });
+
+    packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
+    packager.import('bower_components/other/thing.js');
+
+    builder = new broccoli.Builder(packager.package());
+
+    return builder.build().then(function(results) {
+      expect(listFiles(results.directory).indexOf('other/thing.js') > -1).to.be.ok;
+    });
+  });
+
+  it('should be able to pull from vendor', function() {
+    packager = new Packager({
+      entries: ['dummy', 'dummy/tests']
+    });
+
+    packager.import('vendor/vendored/a.js');
+    packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
+
+    builder = new broccoli.Builder(packager.package());
+
+    return builder.build().then(function(results) {
+      expect(listFiles(results.directory).indexOf('vendored/a.js') > -1).to.be.ok;
+    });
+  });
+
+  describe.skip('default concat strategy', function() {
 
     it('should output the correct concat files', function() {
       packager = new Packager({
@@ -105,7 +133,7 @@ describe('Packager', function() {
     });
 
     it('should include the tests and should be test mode', function() {
-      
+
       packager = new Packager({
         entries: ['dummy']
       });
@@ -125,7 +153,7 @@ describe('Packager', function() {
 
 
     it('should not incude the tests and shouldn\'t be test mode when building for production', function() {
-      
+
       process.env.EMBER_ENV = 'production';
 
       packager = new Packager({
@@ -148,7 +176,7 @@ describe('Packager', function() {
 
   });
 
-  describe('http2 concat strategy', function() {
+  describe.skip('http2 concat strategy', function() {
 
     it('should output granular files', function() {
         packager = new Packager({
@@ -225,7 +253,7 @@ describe('Packager', function() {
           'http2-build/ember/ember.js',
           'http2-build/ember/ember/get.js'
         ]);
-        
+
       });
     });
   });
