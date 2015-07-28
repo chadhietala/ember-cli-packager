@@ -47,14 +47,13 @@ describe('Packager', function() {
         'dummy/components/foo-bar.js',
         'dummy/config/environment.js',
         'dummy/index.js',
+        'dummy/loader.js',
         'dummy/pods/foo-baz/component.js',
         'dummy/pods/foo-baz/template.js',
         'dummy/router.js',
         'dummy/templates/components/foo-bar.js',
         'dummy/templates/profile.js',
         'dummy/test-index.js',
-        'dummy/tests/index.html',
-        'dummy/tests/test-support/baz.js',
         'dummy/tests/unit/components/foo-bar-test.js',
         'ember-qunit.js',
         'ember.js',
@@ -110,33 +109,35 @@ describe('Packager', function() {
     });
   });
 
-  describe.skip('default concat strategy', function() {
-
+  describe('default concat strategy', function() {
     it('should output the correct concat files', function() {
       packager = new Packager({
-        entries: ['dummy']
+        entries: ['dummy', 'dummy/tests']
       });
+      packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
 
       var dist = packager.package();
 
       builder = new broccoli.Builder(dist);
 
       return builder.build().then(function(results) {
-
         expect(listFiles(results.directory)).to.deep.eql([
           'default-build/assets/dummy.css',
           'default-build/assets/dummy.js',
           'default-build/assets/dummy.map',
-          'default-build/assets/vendor.css',
+          'default-build/assets/test-loader.js',
+          'default-build/assets/test-support.js',
+          'default-build/assets/test-support.map',
           'default-build/assets/vendor.js',
           'default-build/assets/vendor.map',
-          'default-build/dummy-tests/testem.js',
-          'default-build/index.html'
+          'default-build/index.html',
+          'default-build/testem.js',
+          'default-build/tests/index.html'
         ]);
       });
     });
 
-    it('should include the tests and should be test mode', function() {
+    it.skip('should include the tests and should be test mode', function() {
 
       packager = new Packager({
         entries: ['dummy']
@@ -156,7 +157,7 @@ describe('Packager', function() {
     });
 
 
-    it('should not incude the tests and shouldn\'t be test mode when building for production', function() {
+    it.skip('should not incude the tests and shouldn\'t be test mode when building for production', function() {
 
       process.env.EMBER_ENV = 'production';
 
