@@ -18,13 +18,14 @@ describe('Packager', function() {
   }
 
   beforeEach(function() {
-    if (builder) {
-      builder = null;
-    }
     process.chdir('tests/fixtures/dummy');
   });
 
   afterEach(function() {
+    if (builder) {
+      builder = null;
+    }
+    packager = null;
     process.chdir(cwd);
   });
 
@@ -110,7 +111,7 @@ describe('Packager', function() {
   });
 
   describe('default concat strategy', function() {
-    it('should output the correct concat files', function() {
+    it.only('should output the correct concat files', function() {
       packager = new Packager({
         entries: ['dummy', 'dummy/tests']
       });
@@ -122,17 +123,21 @@ describe('Packager', function() {
 
       return builder.build().then(function(results) {
         expect(listFiles(results.directory)).to.deep.eql([
-          'default-build/assets/dummy.css',
-          'default-build/assets/dummy.js',
-          'default-build/assets/dummy.map',
-          'default-build/assets/test-loader.js',
-          'default-build/assets/test-support.js',
-          'default-build/assets/test-support.map',
-          'default-build/assets/vendor.js',
-          'default-build/assets/vendor.map',
-          'default-build/index.html',
-          'default-build/testem.js',
-          'default-build/tests/index.html'
+          'assets/failed.png',
+          'assets/passed.png',
+          'assets/dummy.css',
+          'assets/dummy-tests.js',
+          'assets/dummy-tests.map',
+          'assets/dummy.js',
+          'assets/dummy.map',
+          'assets/shared.js',
+          'assets/shared.map',
+          'assets/vendor.css',
+          'assets/test-support.css',
+          'tests/index.html',
+          'crossdomain.xml',
+          'testem.js',
+          'index.html'
         ]);
       });
     });
