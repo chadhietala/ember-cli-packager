@@ -113,31 +113,39 @@ describe('Packager', function() {
   describe('default concat strategy', function() {
     it.only('should output the correct concat files', function() {
       packager = new Packager({
-        entries: ['dummy', 'dummy/tests']
+        entries: ['dummy', 'dummy/tests'],
+        outputPaths: {
+          app: {
+            css: {
+              'foo': 'assets/foo.css'
+            }
+          }
+        }
       });
       packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
-
       var dist = packager.package();
 
       builder = new broccoli.Builder(dist);
 
       return builder.build().then(function(results) {
         expect(listFiles(results.directory)).to.deep.eql([
-          'assets/failed.png',
-          'assets/passed.png',
-          'assets/dummy.css',
           'assets/dummy-tests.js',
           'assets/dummy-tests.map',
+          'assets/dummy.css',
           'assets/dummy.js',
           'assets/dummy.map',
+          'assets/failed.png',
+          'assets/foo.css',
+          'assets/passed.png',
           'assets/shared.js',
           'assets/shared.map',
           'assets/vendor.css',
           'assets/test-support.css',
-          'tests/index.html',
           'crossdomain.xml',
+          'index.html',
+          'robots.txt',
           'testem.js',
-          'index.html'
+          'tests/index.html'
         ]);
       });
     });
