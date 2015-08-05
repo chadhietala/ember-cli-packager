@@ -123,6 +123,8 @@ describe('Packager', function() {
         }
       });
       packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
+
+      packager.import('bower_components/qunit/qunit.css', { type: 'test' });
       var dist = packager.package();
 
       builder = new broccoli.Builder(dist);
@@ -139,8 +141,8 @@ describe('Packager', function() {
           'assets/passed.png',
           'assets/shared.js',
           'assets/shared.map',
-          'assets/vendor.css',
           'assets/test-support.css',
+          'assets/vendor.css',
           'crossdomain.xml',
           'index.html',
           'robots.txt',
