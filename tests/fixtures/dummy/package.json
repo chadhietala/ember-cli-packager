@@ -25,6 +25,7 @@
     "ember-qunit": "9000.0.0",
     "ember-cli-main-file": "0.0.1",
     "loader.js": "1.0.0",
+    "ember-materialize": "1.0.0",
     "ember-cli-test-loader": "1.0.0"
   }
 }

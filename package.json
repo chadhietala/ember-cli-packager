@@ -14,10 +14,14 @@
   "dependencies": {
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
+    "broccoli-plugin": "^1.0.0",
     "broccoli-sourcemap-concat": "^0.4.4",
     "broccoli-stew": "^0.3.2",
     "ember-cli-assembler": "git://github.com/chadhietala/ember-cli-builder.git",
-    "ember-cli-linker": "git://github.com/chadhietala/ember-cli-pre-packager.git"
+    "ember-cli-linker": "git://github.com/chadhietala/ember-cli-pre-packager.git",
+    "fs-extra": "^0.22.1",
+    "lodash-node": "^3.10.0",
+    "merge-defaults": "^0.2.1"
   },
   "devDependencies": {
     "broccoli": "^0.16.4",

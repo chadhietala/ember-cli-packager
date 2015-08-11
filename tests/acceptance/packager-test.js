@@ -18,13 +18,14 @@ describe('Packager', function() {
   }
 
   beforeEach(function() {
-    if (builder) {
-      builder = null;
-    }
     process.chdir('tests/fixtures/dummy');
   });
 
   afterEach(function() {
+    if (builder) {
+      builder = null;
+    }
+    packager = null;
     process.chdir(cwd);
   });
 
@@ -110,29 +111,43 @@ describe('Packager', function() {
   });
 
   describe('default concat strategy', function() {
-    it('should output the correct concat files', function() {
+    it.only('should output the correct concat files', function() {
       packager = new Packager({
-        entries: ['dummy', 'dummy/tests']
+        entries: ['dummy', 'dummy/tests'],
+        outputPaths: {
+          app: {
+            css: {
+              'foo': 'assets/foo.css'
+            }
+          }
+        }
       });
       packager.import('bower_components/some/bower-thing.js', { exports: { some: ['default'] } });
 
+      packager.import('bower_components/qunit/qunit.css', { type: 'test' });
       var dist = packager.package();
 
       builder = new broccoli.Builder(dist);
 
       return builder.build().then(function(results) {
         expect(listFiles(results.directory)).to.deep.eql([
-          'default-build/assets/dummy.css',
-          'default-build/assets/dummy.js',
-          'default-build/assets/dummy.map',
-          'default-build/assets/test-loader.js',
-          'default-build/assets/test-support.js',
-          'default-build/assets/test-support.map',
-          'default-build/assets/vendor.js',
-          'default-build/assets/vendor.map',
-          'default-build/index.html',
-          'default-build/testem.js',
-          'default-build/tests/index.html'
+          'assets/dummy-tests.js',
+          'assets/dummy-tests.map',
+          'assets/dummy.css',
+          'assets/dummy.js',
+          'assets/dummy.map',
+          'assets/failed.png',
+          'assets/foo.css',
+          'assets/passed.png',
+          'assets/shared.js',
+          'assets/shared.map',
+          'assets/test-support.css',
+          'assets/vendor.css',
+          'crossdomain.xml',
+          'index.html',
+          'robots.txt',
+          'testem.js',
+          'tests/index.html'
         ]);
       });
     });
